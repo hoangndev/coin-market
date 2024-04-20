@@ -1,51 +1,41 @@
-const socketUrl = "wss://stream.binance.com:9443/ws/!ticker@arr";
+const apiUrl = "https://fapi.binance.com/fapi/v1/ticker/24hr";
 const itemsPerPage = 10; // Number of items per page
 let currentPage = 1; // Current page
-let websocket;
 
-function connectWebSocket() {
-  websocket = new WebSocket(socketUrl);
-
-  websocket.onopen = function () {
-    console.log("WebSocket connection established.");
-  };
-
-  websocket.onerror = function (error) {
-    console.error("WebSocket error:", error);
-  };
-
-  websocket.onmessage = function (event) {
-    const data = JSON.parse(event.data);
-
-    // Sort data by symbol
-    data.sort((a, b) => {
-      // Check if a.symbol and b.symbol are defined before comparing
-      if (a.symbol && b.symbol) {
-        return a.symbol.localeCompare(b.symbol);
+function fetchAndUpdateData() {
+  fetch(apiUrl)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
-      // If either a.symbol or b.symbol is undefined, return 0 (no sorting)
-      return 0;
+      return response.json();
+    })
+    .then((data) => {
+      // Sort data by symbol
+      data.sort((a, b) => a.symbol.localeCompare(b.symbol));
+
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedData = data.slice(startIndex, endIndex);
+
+      let listCoins = "";
+      paginatedData.forEach((item, index) => {
+        listCoins += `<tr>
+                        <th scope="row">${startIndex + index + 1}</th>
+                        <td>${item?.symbol}</td>
+                        <td>${item?.lastPrice}</td>
+                        <td>${item?.quoteVolume}</td>
+                        <td>${item?.volume}</td>
+                      </tr>`;
+      });
+      document.getElementById("listCoins").innerHTML = listCoins;
+
+      // Update pagination links
+      updatePagination(data.length);
+    })
+    .catch((error) => {
+      console.error("There was a problem with the fetch operation:", error);
     });
-
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const paginatedData = data.slice(startIndex, endIndex);
-
-    let listCoins = "";
-    paginatedData.forEach((item, index) => {
-      listCoins += `<tr>
-                      <th scope="row">${startIndex + index + 1}</th>
-                      <td>${item.symbol}</td>
-                      <td>${item.lastPrice}</td>
-                      <td>${item.quoteVolume}</td>
-                      <td>${item.volume}</td>
-                    </tr>`;
-    });
-    document.getElementById("listCoins").innerHTML = listCoins;
-
-    // Update pagination links
-    updatePagination(data.length);
-  };
 }
 
 function updatePagination(totalItems) {
@@ -119,14 +109,12 @@ function updatePagination(totalItems) {
       } else if (!isNaN(page)) {
         currentPage = parseInt(page);
       }
-      // No need to fetch data here, it will be updated via WebSocket
+      fetchAndUpdateData();
     });
   });
 }
 
-connectWebSocket();
-
-// fetchAndUpdateData();
+fetchAndUpdateData();
 // setInterval(fetchAndUpdateData, 1000);
 
 // Get List messages
@@ -164,3 +152,15 @@ fetch("http://localhost:3000/messages")
     document.getElementById("listMessages").innerHTML = listMessages;
   })
   .catch((error) => console.error("Error fetching messages:", error));
+
+// Unix timestamp in milliseconds
+const bannedUntilTimestamp = 1713530172691;
+
+// Convert Unix timestamp to Date object
+const bannedUntilDate = new Date(bannedUntilTimestamp);
+
+// Convert Date object to human-readable date and time string
+const bannedUntilString = bannedUntilDate.toString();
+
+console.log("Banned until:", bannedUntilString);
+console.log(Date());
