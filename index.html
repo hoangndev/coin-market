@@ -55,12 +55,16 @@
         </button>
       </div>
       <div class="chat-content-container">
-        <div class="container text-center" id="listMessages"></div>
+        <div
+          class="container text-center list-messages"
+          id="listMessages"
+        ></div>
       </div>
       <div class="enter-message-container">
-        <input type="text" class="enter-message" /><button
+        <input type="text" class="enter-message" id="message-content" /><button
           type="submit"
           class="send-message-button"
+          onclick="sendMessage()"
         >
           Send
         </button>

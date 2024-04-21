@@ -118,8 +118,7 @@ fetchAndUpdateData();
 // setInterval(fetchAndUpdateData, 1000);
 
 // Get List messages
-
-fetch("https://coin-market-be.onrender.com/messages")
+fetch("http://localhost:3000/messages")
   .then((response) => response.json())
   .then((messages) => {
     console.log(messages);
@@ -134,7 +133,7 @@ fetch("https://coin-market-be.onrender.com/messages")
         class="col-11 d-flex justify-content-start"
         style="font-size: 15px"
       >
-        ${item?.name}
+        ${item?.user}
       </div>
     </div>
     <div class="row">
@@ -153,14 +152,36 @@ fetch("https://coin-market-be.onrender.com/messages")
   })
   .catch((error) => console.error("Error fetching messages:", error));
 
-// Unix timestamp in milliseconds
-const bannedUntilTimestamp = 1713530172691;
+// Send Message
+async function sendMessage() {
+  try {
+    const messageContent = document.getElementById("message-content").value;
+    if (!messageContent.trim()) {
+      alert("Please enter a message");
+      return;
+    }
 
-// Convert Unix timestamp to Date object
-const bannedUntilDate = new Date(bannedUntilTimestamp);
+    const user = "Anonymous";
 
-// Convert Date object to human-readable date and time string
-const bannedUntilString = bannedUntilDate.toString();
+    const response = await fetch("http://localhost:3000/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: messageContent,
+        user: user,
+      }),
+    });
+    console.log(messageContent, user);
+    if (!response.ok) {
+      throw new Error("Failed to add message");
+    }
 
-console.log("Banned until:", bannedUntilString);
-console.log(Date());
+    document.getElementById("message-content").value = "";
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to send message:", error);
+  }
+}

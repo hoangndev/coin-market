@@ -156,11 +156,16 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 15px;
+  padding: 15px 15px 0px 15px;
   width: 400px;
   height: 400px;
 }
 
+.list-messages {
+  overflow-y: scroll;
+  max-height: 100%;
+  box-sizing: border-box;
+}
 .message-content {
   color: rgb(162, 162, 162);
   font-size: 12px;
@@ -168,4 +173,25 @@ body {
 
 .each-message {
   margin: 10px 0;
+}
+
+/* Custom scroll bar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
