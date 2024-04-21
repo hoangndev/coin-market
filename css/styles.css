@@ -92,6 +92,24 @@ body {
   z-index: 100;
 }
 
+/* CSS to show chat box when open */
+.chat-box-container.open {
+  display: block;
+}
+
+/* CSS to hide chat box when closed */
+.chat-box-container {
+  display: none;
+}
+
+.open-chat {
+  position: absolute;
+  bottom: 10px;
+  right: 25px;
+  border: none;
+  background-color: white;
+}
+
 .chat-box-action {
   position: absolute;
   top: 0;
@@ -118,7 +136,7 @@ body {
   position: absolute;
   bottom: 0;
   border-top: 1px slategray solid;
-  padding: 10px 15px;
+  padding: 10px;
   height: 50px;
   width: 100%;
   display: flex;
@@ -141,14 +159,17 @@ body {
 
 .send-message-button {
   border: none;
-  border-radius: 40%;
+  border-radius: 7px;
   padding: 5px;
   background-color: white;
+  color: black;
+  border: black 1px solid;
 }
 
 .send-message-button:hover {
   background-color: rgb(135, 181, 255);
   color: rgb(255, 255, 255);
+  border: none;
 }
 
 .chat-content-container {

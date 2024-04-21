@@ -193,3 +193,15 @@ async function sendMessage() {
     console.error("Failed to send message:", error);
   }
 }
+
+// Close Chat box
+function closeChat() {
+  const chatBoxContainer = document.getElementById("chatBoxContainer");
+  chatBoxContainer.classList.remove("open");
+}
+
+// Open Chat box
+function openChat() {
+  const chatBoxContainer = document.getElementById("chatBoxContainer");
+  chatBoxContainer.classList.add("open");
+}

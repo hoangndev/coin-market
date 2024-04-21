@@ -48,9 +48,12 @@
     </div>
 
     <!-- Chat Box -->
-    <div class="chat-box-container">
+    <button class="open-chat" onclick="openChat()">
+      <i class="bi bi-chat-dots fs-1"></i>
+    </button>
+    <div class="chat-box-container" id="chatBoxContainer">
       <div class="chat-box-action">
-        <button class="minimize-chat-button" onclick="minimizeChat()">
+        <button class="minimize-chat-button" onclick="closeChat()">
           <i class="bi bi-arrow-bar-down"></i>
         </button>
       </div>
