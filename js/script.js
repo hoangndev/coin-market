@@ -119,7 +119,7 @@ fetchAndUpdateData();
 
 // Get List messages
 const getListMessages = () => {
-  fetch("http://localhost:3000/messages")
+  fetch("https://coin-market-be.onrender.com/messages")
     .then((response) => response.json())
     .then((messages) => {
       let listMessages = "";
@@ -166,16 +166,19 @@ async function sendMessage() {
 
     const user = "Anonymous";
 
-    const response = await fetch("http://localhost:3000/messages", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        message: messageContent,
-        user: user,
-      }),
-    });
+    const response = await fetch(
+      "https://coin-market-be.onrender.com/messages",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: messageContent,
+          user: user,
+        }),
+      }
+    );
     console.log(messageContent, user);
     if (!response.ok) {
       throw new Error("Failed to add message");
