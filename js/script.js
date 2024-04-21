@@ -119,7 +119,7 @@ fetchAndUpdateData();
 
 // Get List messages
 
-fetch("http://localhost:3000/messages")
+fetch("https://coin-market-be.onrender.com/messages")
   .then((response) => response.json())
   .then((messages) => {
     console.log(messages);
