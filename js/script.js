@@ -118,39 +118,42 @@ fetchAndUpdateData();
 // setInterval(fetchAndUpdateData, 1000);
 
 // Get List messages
-fetch("http://localhost:3000/messages")
-  .then((response) => response.json())
-  .then((messages) => {
-    console.log(messages);
+const getListMessages = () => {
+  fetch("http://localhost:3000/messages")
+    .then((response) => response.json())
+    .then((messages) => {
+      let listMessages = "";
+      messages.forEach((item) => {
+        listMessages += `<div class="each-message">
+                          <div class="row">
+                            <div class="col-1"><i class="bi bi-person-circle"></i></div>
+                            <div
+                              class="col-11 d-flex justify-content-start"
+                              style="font-size: 15px"
+                            >
+                              ${item?.user}
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-1"></div>
+                            <div
+                              class="col-11 d-flex justify-content-start message-content"
+                              
+                            >
+                              ${item?.message}
+                            </div>
+                          </div>
+                        </div>`;
+      });
 
-    let listMessages = "";
-
-    messages.forEach((item) => {
-      listMessages += `<div class="each-message">
-    <div class="row">
-      <div class="col-1"><i class="bi bi-person-circle"></i></div>
-      <div
-        class="col-11 d-flex justify-content-start"
-        style="font-size: 15px"
-      >
-        ${item?.user}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-1"></div>
-      <div
-        class="col-11 d-flex justify-content-start message-content"
-        
-      >
-        ${item?.message}
-      </div>
-    </div>
-  </div>`;
-    });
-
-    document.getElementById("listMessages").innerHTML = listMessages;
-  })
-  .catch((error) => console.error("Error fetching messages:", error));
+      document.getElementById("listMessages").innerHTML = listMessages;
+      const chatHistory = document.getElementById("listMessages");
+      chatHistory.scrollTop =
+        chatHistory.scrollHeight - chatHistory.clientHeight;
+    })
+    .catch((error) => console.error("Error fetching messages:", error));
+};
+getListMessages();
 
 // Send Message
 async function sendMessage() {
@@ -180,6 +183,7 @@ async function sendMessage() {
 
     document.getElementById("message-content").value = "";
     const data = await response.json();
+    getListMessages();
     return data;
   } catch (error) {
     console.error("Failed to send message:", error);
