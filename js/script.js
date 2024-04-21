@@ -154,6 +154,7 @@ const getListMessages = () => {
     .catch((error) => console.error("Error fetching messages:", error));
 };
 getListMessages();
+setInterval(getListMessages, 5000); // 5000 milliseconds = 5 seconds
 
 // Send Message
 async function sendMessage() {
